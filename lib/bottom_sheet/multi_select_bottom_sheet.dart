@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../util/multi_select_item.dart';
 import '../util/multi_select_actions.dart';
 import '../util/multi_select_list_type.dart';
@@ -183,23 +184,23 @@ class _MultiSelectBottomSheetState<T> extends State<MultiSelectBottomSheet<T>> {
       child: ChoiceChip(
         backgroundColor: widget.unselectedColor,
         selectedColor:
-            widget.colorator != null && widget.colorator!(item.value) != null
-                ? widget.colorator!(item.value)
-                : widget.selectedColor != null
-                    ? widget.selectedColor
-                    : Theme.of(context).primaryColor.withOpacity(0.35),
+        widget.colorator != null && widget.colorator!(item.value) != null
+            ? widget.colorator!(item.value)
+            : widget.selectedColor != null
+            ? widget.selectedColor
+            : Theme.of(context).primaryColor.withOpacity(0.35),
         label: Text(
           item.label,
           style: _selectedValues.contains(item.value)
               ? TextStyle(
-                  color: widget.selectedItemsTextStyle?.color ??
-                      widget.colorator?.call(item.value) ??
-                      widget.selectedColor?.withOpacity(1) ??
-                      Theme.of(context).primaryColor,
-                  fontSize: widget.selectedItemsTextStyle != null
-                      ? widget.selectedItemsTextStyle!.fontSize
-                      : null,
-                )
+            color: widget.selectedItemsTextStyle?.color ??
+                widget.colorator?.call(item.value) ??
+                widget.selectedColor?.withOpacity(1) ??
+                Theme.of(context).primaryColor,
+            fontSize: widget.selectedItemsTextStyle != null
+                ? widget.selectedItemsTextStyle!.fontSize
+                : null,
+          )
               : widget.itemsTextStyle,
         ),
         selected: item.selected,
@@ -225,7 +226,7 @@ class _MultiSelectBottomSheetState<T> extends State<MultiSelectBottomSheet<T>> {
   Widget build(BuildContext context) {
     return Container(
       padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom*0.3),
       child: DraggableScrollableSheet(
         initialChildSize: widget.initialChildSize ?? 0.3,
         minChildSize: widget.minChildSize ?? 0.3,
@@ -235,94 +236,97 @@ class _MultiSelectBottomSheetState<T> extends State<MultiSelectBottomSheet<T>> {
           return Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(10),
+                padding: REdgeInsets.all(12),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     _showSearch
                         ? Expanded(
-                            child: Container(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: TextField(
-                                autofocus: true,
-                                style: widget.searchTextStyle,
-                                decoration: InputDecoration(
-                                  hintStyle: widget.searchHintStyle,
-                                  hintText: widget.searchHint ?? "Search",
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: widget.selectedColor ??
-                                            Theme.of(context).primaryColor),
-                                  ),
-                                ),
-                                onChanged: (val) {
-                                  List<MultiSelectItem<T>> filteredList = [];
-                                  filteredList = widget.updateSearchQuery(
-                                      val, widget.items);
-                                  setState(() {
-                                    if (widget.separateSelectedItems) {
-                                      _items =
-                                          widget.separateSelected(filteredList);
-                                    } else {
-                                      _items = filteredList;
-                                    }
-                                  });
-                                },
-                              ),
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: TextField(
+                          autofocus: true,
+                          style: widget.searchTextStyle,
+                          decoration: InputDecoration(
+                            hintStyle: widget.searchHintStyle,
+                            hintText: widget.searchHint ?? "Search",
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: widget.selectedColor ??
+                                      Theme.of(context).primaryColor),
                             ),
-                          )
+                          ),
+                          onChanged: (val) {
+                            List<MultiSelectItem<T>> filteredList = [];
+                            filteredList = widget.updateSearchQuery(
+                                val, widget.items);
+                            setState(() {
+                              if (widget.separateSelectedItems) {
+                                _items = widget
+                                    .separateSelected(filteredList);
+                              } else {
+                                _items = filteredList;
+                              }
+                            });
+                          },
+                        ),
+                      ),
+                    )
                         : widget.title ??
-                            Text(
-                              "Select",
-                              style: TextStyle(fontSize: 18),
-                            ),
+                        const Text(
+                          "Select",
+                          style: TextStyle(fontSize: 18),
+                        ),
                     widget.searchable
                         ? IconButton(
-                            icon: _showSearch
-                                ? widget.closeSearchIcon ?? Icon(Icons.close)
-                                : widget.searchIcon ?? Icon(Icons.search),
-                            onPressed: () {
-                              setState(() {
-                                _showSearch = !_showSearch;
-                                if (!_showSearch) {
-                                  if (widget.separateSelectedItems) {
-                                    _items =
-                                        widget.separateSelected(widget.items);
-                                  } else {
-                                    _items = widget.items;
-                                  }
-                                }
-                              });
-                            },
-                          )
+                      icon: _showSearch
+                          ? widget.closeSearchIcon ??
+                          const Icon(Icons.close)
+                          : widget.searchIcon ??
+                          const Icon(Icons.search),
+                      onPressed: () {
+                        setState(() {
+                          _showSearch = !_showSearch;
+                          if (!_showSearch) {
+                            if (widget.separateSelectedItems) {
+                              _items =
+                                  widget.separateSelected(widget.items);
+                            } else {
+                              _items = widget.items;
+                            }
+                          }
+                        });
+                      },
+                    )
                         : Padding(
-                            padding: EdgeInsets.all(15),
-                          ),
+                      padding: REdgeInsets.all(15),
+                    ),
                   ],
                 ),
               ),
               Expanded(
                 child: widget.listType == null ||
-                        widget.listType == MultiSelectListType.LIST
+                    widget.listType == MultiSelectListType.LIST
                     ? ListView.builder(
-                        controller: scrollController,
-                        itemCount: _items.length,
-                        itemBuilder: (context, index) {
-                          return _buildListItem(_items[index]);
-                        },
-                      )
+                  controller: scrollController,
+                  itemCount: _items.length,
+                  itemBuilder: (context, index) {
+                    return _buildListItem(_items[index]);
+                  },
+                )
                     : SingleChildScrollView(
-                        controller: scrollController,
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          child: Wrap(
-                            children: _items.map(_buildChipItem).toList(),
-                          ),
-                        ),
-                      ),
+                  controller: scrollController,
+                  child: Container(
+                    padding: REdgeInsets.all(10),
+                    child: Wrap(
+                      children: _items.map(_buildChipItem).toList(),
+                    ),
+                  ),
+                ),
               ),
               Container(
-                padding: EdgeInsets.all(2),
+                margin: REdgeInsets.only(bottom: 16),
+                padding: REdgeInsets.all(2),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -336,8 +340,8 @@ class _MultiSelectBottomSheetState<T> extends State<MultiSelectBottomSheet<T>> {
                               "CANCEL",
                               style: TextStyle(
                                 color: (widget.selectedColor != null &&
-                                        widget.selectedColor !=
-                                            Colors.transparent)
+                                    widget.selectedColor !=
+                                        Colors.transparent)
                                     ? widget.selectedColor!.withOpacity(1)
                                     : Theme.of(context).primaryColor,
                               ),
@@ -356,8 +360,8 @@ class _MultiSelectBottomSheetState<T> extends State<MultiSelectBottomSheet<T>> {
                               "OK",
                               style: TextStyle(
                                 color: (widget.selectedColor != null &&
-                                        widget.selectedColor !=
-                                            Colors.transparent)
+                                    widget.selectedColor !=
+                                        Colors.transparent)
                                     ? widget.selectedColor!.withOpacity(1)
                                     : Theme.of(context).primaryColor,
                               ),

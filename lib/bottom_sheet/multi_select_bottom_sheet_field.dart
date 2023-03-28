@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../util/multi_select_list_type.dart';
 import '../chip_display/multi_select_chip_display.dart';
 import '../util/multi_select_item.dart';
@@ -150,50 +151,50 @@ class MultiSelectBottomSheetField<V> extends FormField<List<V>> {
     this.validator,
     this.autovalidateMode = AutovalidateMode.disabled,
   }) : super(
-            key: key,
-            onSaved: onSaved,
-            validator: validator,
-            autovalidateMode: autovalidateMode,
-            initialValue: initialValue,
-            builder: (FormFieldState<List<V>> state) {
-              _MultiSelectBottomSheetFieldView view =
-                  _MultiSelectBottomSheetFieldView<V>(
-                items: items,
-                decoration: decoration,
-                unselectedColor: unselectedColor,
-                colorator: colorator,
-                itemsTextStyle: itemsTextStyle,
-                selectedItemsTextStyle: selectedItemsTextStyle,
-                backgroundColor: backgroundColor,
-                title: title,
-                initialValue: initialValue,
-                barrierColor: barrierColor,
-                buttonIcon: buttonIcon,
-                buttonText: buttonText,
-                cancelText: cancelText,
-                chipDisplay: chipDisplay,
-                closeSearchIcon: closeSearchIcon,
-                confirmText: confirmText,
-                initialChildSize: initialChildSize,
-                listType: listType,
-                maxChildSize: maxChildSize,
-                minChildSize: minChildSize,
-                onConfirm: onConfirm,
-                onSelectionChanged: onSelectionChanged,
-                searchHintStyle: searchHintStyle,
-                searchIcon: searchIcon,
-                searchHint: searchHint,
-                searchTextStyle: searchTextStyle,
-                searchable: searchable,
-                selectedColor: selectedColor,
-                separateSelectedItems: separateSelectedItems,
-                shape: shape,
-                checkColor: checkColor,
-                isDismissible: isDismissible,
-              );
-              return _MultiSelectBottomSheetFieldView<V?>._withState(
-                  view as _MultiSelectBottomSheetFieldView<V?>, state);
-            });
+      key: key,
+      onSaved: onSaved,
+      validator: validator,
+      autovalidateMode: autovalidateMode,
+      initialValue: initialValue,
+      builder: (FormFieldState<List<V>> state) {
+        _MultiSelectBottomSheetFieldView view =
+        _MultiSelectBottomSheetFieldView<V>(
+          items: items,
+          decoration: decoration,
+          unselectedColor: unselectedColor,
+          colorator: colorator,
+          itemsTextStyle: itemsTextStyle,
+          selectedItemsTextStyle: selectedItemsTextStyle,
+          backgroundColor: backgroundColor,
+          title: title,
+          initialValue: initialValue,
+          barrierColor: barrierColor,
+          buttonIcon: buttonIcon,
+          buttonText: buttonText,
+          cancelText: cancelText,
+          chipDisplay: chipDisplay,
+          closeSearchIcon: closeSearchIcon,
+          confirmText: confirmText,
+          initialChildSize: initialChildSize,
+          listType: listType,
+          maxChildSize: maxChildSize,
+          minChildSize: minChildSize,
+          onConfirm: onConfirm,
+          onSelectionChanged: onSelectionChanged,
+          searchHintStyle: searchHintStyle,
+          searchIcon: searchIcon,
+          searchHint: searchHint,
+          searchTextStyle: searchTextStyle,
+          searchable: searchable,
+          selectedColor: selectedColor,
+          separateSelectedItems: separateSelectedItems,
+          shape: shape,
+          checkColor: checkColor,
+          isDismissible: isDismissible,
+        );
+        return _MultiSelectBottomSheetFieldView<V?>._withState(
+            view as _MultiSelectBottomSheetFieldView<V?>, state);
+      });
 }
 
 // ignore: must_be_immutable
@@ -337,7 +338,7 @@ class __MultiSelectBottomSheetFieldViewState<V>
     List<MultiSelectItem<V>?> chipDisplayItems = [];
     chipDisplayItems = _selectedItems
         .map((e) =>
-            widget.items.firstWhereOrNull((element) => e == element.value))
+        widget.items.firstWhereOrNull((element) => e == element.value))
         .toList();
     chipDisplayItems.removeWhere((element) => element == null);
     if (widget.chipDisplay != null) {
@@ -364,7 +365,7 @@ class __MultiSelectBottomSheetFieldViewState<V>
           decoration: widget.chipDisplay!.decoration,
           chipColor: widget.chipDisplay!.chipColor ??
               ((widget.selectedColor != null &&
-                      widget.selectedColor != Colors.transparent)
+                  widget.selectedColor != Colors.transparent)
                   ? widget.selectedColor!.withOpacity(0.35)
                   : null),
           alignment: widget.chipDisplay!.alignment,
@@ -383,7 +384,7 @@ class __MultiSelectBottomSheetFieldViewState<V>
         items: chipDisplayItems,
         colorator: widget.colorator,
         chipColor: (widget.selectedColor != null &&
-                widget.selectedColor != Colors.transparent)
+            widget.selectedColor != Colors.transparent)
             ? widget.selectedColor!.withOpacity(0.35)
             : null,
       );
@@ -397,7 +398,7 @@ class __MultiSelectBottomSheetFieldViewState<V>
         barrierColor: widget.barrierColor,
         shape: widget.shape ??
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(15.0)),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(15.0.r)),
             ),
         isScrollControlled: true,
         context: context,
@@ -435,8 +436,9 @@ class __MultiSelectBottomSheetFieldViewState<V>
             maxChildSize: widget.maxChildSize,
           );
         });
-    print(myVar.toString());
-    _selectedItems = myVar!;
+    if (myVar != null) {
+      _selectedItems = myVar;
+    }
   }
 
   @override
@@ -451,28 +453,28 @@ class __MultiSelectBottomSheetFieldViewState<V>
           child: Container(
             decoration: widget.state != null
                 ? widget.decoration ??
-                    BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: widget.state != null && widget.state!.hasError
-                              ? Colors.red.shade800.withOpacity(0.6)
-                              : _selectedItems.isNotEmpty
-                                  ? (widget.selectedColor != null &&
-                                          widget.selectedColor !=
-                                              Colors.transparent)
-                                      ? widget.selectedColor!
-                                      : Theme.of(context).primaryColor
-                                  : Colors.black45,
-                          width: _selectedItems.isNotEmpty
-                              ? (widget.state != null && widget.state!.hasError)
-                                  ? 1.4
-                                  : 1.8
-                              : 1.2,
-                        ),
-                      ),
-                    )
+                BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: widget.state != null && widget.state!.hasError
+                          ? Colors.red.shade800.withOpacity(0.6)
+                          : _selectedItems.isNotEmpty
+                          ? (widget.selectedColor != null &&
+                          widget.selectedColor !=
+                              Colors.transparent)
+                          ? widget.selectedColor!
+                          : Theme.of(context).primaryColor
+                          : Colors.black45,
+                      width: _selectedItems.isNotEmpty
+                          ? (widget.state != null && widget.state!.hasError)
+                          ? 1.4
+                          : 1.8
+                          : 1.2,
+                    ),
+                  ),
+                )
                 : widget.decoration,
-            padding: EdgeInsets.all(10),
+            padding: REdgeInsets.symmetric(vertical: 16, horizontal: 12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -484,23 +486,23 @@ class __MultiSelectBottomSheetFieldViewState<V>
         ),
         _buildInheritedChipDisplay(),
         widget.state != null && widget.state!.hasError
-            ? SizedBox(height: 5)
+            ? SizedBox(height: 5.h)
             : Container(),
         widget.state != null && widget.state!.hasError
             ? Row(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4),
-                    child: Text(
-                      widget.state!.errorText!,
-                      style: TextStyle(
-                        color: Colors.red[800],
-                        fontSize: 12.5,
-                      ),
-                    ),
-                  ),
-                ],
-              )
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(left: 4),
+              child: Text(
+                widget.state!.errorText!,
+                style: TextStyle(
+                  color: Colors.red[800],
+                  fontSize: 12.5,
+                ),
+              ),
+            ),
+          ],
+        )
             : Container(),
       ],
     );
